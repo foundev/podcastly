@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>Sample Podcast</title>
+    <link>https://example.com/podcasts/sample</link>
+    <description>A demo feed used in automated tests.</description>
+    <itunes:image href="https://example.com/podcasts/sample.jpg" />
+    <item>
+      <title>Episode One</title>
+      <guid>episode-1</guid>
+      <link>https://example.com/podcasts/sample/1</link>
+      <description>The story begins.</description>
+      <pubDate>Mon, 01 Jan 2024 08:00:00 GMT</pubDate>
+      <enclosure url="https://cdn.example.com/sample-1.mp3" type="audio/mpeg" />
+      <itunes:duration>10:05</itunes:duration>
+    </item>
+    <item>
+      <title>Episode Two</title>
+      <guid>episode-2</guid>
+      <link>https://example.com/podcasts/sample/2</link>
+      <description>The sequel.</description>
+      <pubDate>Mon, 08 Jan 2024 08:00:00 GMT</pubDate>
+      <enclosure url="https://cdn.example.com/sample-2.mp3" type="audio/mpeg" />
+      <itunes:duration>09:15</itunes:duration>
+    </item>
+  </channel>
+</rss>

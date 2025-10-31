@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Podcastly</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Podcastly</h1>
+      <p class="tagline">Subscribe to RSS feeds and explore your favourite shows.</p>
+    </header>
+
+    <main class="app-content">
+      <section class="card">
+        <h2>Add a Podcast</h2>
+        <form id="subscribe-form" class="subscribe-form">
+          <label for="feed-url">RSS Feed URL</label>
+          <div class="input-row">
+            <input
+              type="url"
+              id="feed-url"
+              name="feed-url"
+              placeholder="https://example.com/podcast/feed.xml"
+              required
+            />
+            <button type="submit">Subscribe</button>
+          </div>
+        </form>
+        <p id="status-message" class="status-message" role="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>Podcasts</h2>
+        <ul id="podcast-list" class="podcast-list"></ul>
+      </section>
+
+      <section class="card">
+        <h2 id="episodes-heading">Episodes</h2>
+        <ul id="episode-list" class="episode-list"></ul>
+      </section>
+    </main>
+
+    <template id="podcast-item-template">
+      <li class="podcast-list-item">
+        <button type="button" class="podcast-button">
+          <span class="podcast-title"></span>
+          <span class="podcast-description"></span>
+        </button>
+      </li>
+    </template>
+
+    <template id="episode-item-template">
+      <li class="episode-list-item">
+        <div class="episode-header">
+          <strong class="episode-title"></strong>
+          <span class="episode-meta"></span>
+        </div>
+        <p class="episode-description"></p>
+        <div class="episode-links">
+          <a class="episode-audio" target="_blank" rel="noopener">Play</a>
+          <a class="episode-link" target="_blank" rel="noopener">Show notes</a>
+        </div>
+      </li>
+    </template>
+
+    <script src="js/app.js" defer></script>
+  </body>
+</html>
