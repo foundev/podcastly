@@ -95,6 +95,10 @@ def get_schema_version(conn: sqlite3.Connection) -> Optional[int]:
 def ensure_database(db_path: Path | str = DEFAULT_DB_PATH) -> sqlite3.Connection:
     """Create a connection and initialize tables if necessary."""
     conn = get_connection(db_path)
-    if not get_schema_version(conn):
+    try:
+        version = get_schema_version(conn)
+    except sqlite3.OperationalError:
+        version = None
+    if version is None:
         init_db(conn)
     return conn

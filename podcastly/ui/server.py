@@ -43,10 +43,13 @@ def run_server(
 def _build_handler(db_path: Path, static_root: Path) -> Callable[..., BaseHTTPRequestHandler]:
     """Create a request handler bound to the database and static directories."""
 
+    db_path_resolved = db_path
+    static_root_resolved = static_root
+
     class PodcastlyRequestHandler(BaseHTTPRequestHandler):
         server_version = "PodcastlyHTTP/0.1"
-        db_path = db_path
-        static_root = static_root
+        db_path = db_path_resolved
+        static_root = static_root_resolved
 
         def do_GET(self) -> None:
             parsed = urlparse(self.path)
