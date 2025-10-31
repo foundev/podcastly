@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", handleSubscribe);
 
   loadPodcasts();
+  registerServiceWorker();
 });
 
 async function loadPodcasts() {
@@ -181,4 +182,18 @@ async function safeJson(response) {
   } catch (error) {
     return null;
   }
+}
+
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) {
+    return;
+  }
+  navigator.serviceWorker
+    .register("/service-worker.js")
+    .then(() => {
+      // no-op; registration succeeded
+    })
+    .catch((error) => {
+      console.warn("Service worker registration failed:", error);
+    });
 }

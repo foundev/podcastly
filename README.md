@@ -23,6 +23,10 @@ python main.py --rss-url=https://example.com/feed.xml --rss-url=https://example.
 pytest -vv
 ```
 
+## Install as a PWA
+
+Open the app in Chrome, Edge, or another PWA-capable browser and use the “Install”/“Add to Home screen” option. Manifest and service-worker support allow Podcastly to run offline for previously loaded feeds and assets.
+
 ## License
 
 GPL v3
