@@ -1,0 +1,28 @@
+{
+  "name": "podcastly",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Client-side RSS podcast reader with localStorage",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10",
+    "vite-plugin-pwa": "^0.17.4"
+  },
+  "keywords": [
+    "podcast",
+    "rss",
+    "typescript",
+    "vite",
+    "pwa",
+    "localstorage"
+  ],
+  "author": "",
+  "license": "GPL-3.0"
+}
