@@ -1,32 +1,61 @@
 # Podcastly
 
-Open source podcast app written in vanilla Python and JavaScript. Subscribe to your favorite shows via RSS, with adapters for popular podcast directories on the roadmap.
+Application de podcast open source écrite en JavaScript vanilla. Abonnez-vous à vos émissions préférées via RSS. Toutes les données sont stockées localement dans le navigateur (localStorage).
 
-## Quick Start
+## Démarrage rapide
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python main.py --host=127.0.0.1 --port=8000
-```
-
-Then visit [http://127.0.0.1:8000](http://127.0.0.1:8000) to use the web player. Optionally pre-load feeds on launch:
+### Option 1 : Serveur HTTP Python (si Python est installé)
 
 ```bash
-python main.py --rss-url=https://example.com/feed.xml --rss-url=https://example.org/show.rss
+python -m http.server 8000 --directory web
 ```
 
-## Running Tests
+### Option 2 : Serveur HTTP Node.js (si Node.js est installé)
 
 ```bash
-pytest -vv
+npx http-server web -p 8000
 ```
 
-## Install as a PWA
+### Option 3 : Serveur HTTP PHP (si PHP est installé)
 
-Open the app in Chrome, Edge, or another PWA-capable browser and use the “Install”/“Add to Home screen” option. Manifest and service-worker support allow Podcastly to run offline for previously loaded feeds and assets.
+```bash
+php -S 127.0.0.1:8000 -t web
+```
 
-## License
+### Option 4 : Utiliser le script serve.sh
+
+```bash
+./serve.sh
+```
+
+Puis visitez [http://127.0.0.1:8000](http://127.0.0.1:8000) pour utiliser le lecteur web.
+
+## Installation en tant que PWA
+
+Ouvrez l'application dans Chrome, Edge ou un autre navigateur compatible PWA et utilisez l'option "Installer" / "Ajouter à l'écran d'accueil". Le manifest et le service worker permettent à Podcastly de fonctionner hors ligne pour les flux et assets précédemment chargés.
+
+## Architecture
+
+- **Frontend uniquement** : Toute l'application fonctionne dans le navigateur
+- **Stockage local** : Les données (podcasts, épisodes) sont stockées dans localStorage
+- **Parsing RSS côté client** : Les flux RSS sont parsés directement dans le navigateur
+- **Aucune dépendance backend** : Pas de base de données, pas de serveur API
+
+## Structure du projet
+
+```
+podcastly/
+├── web/              # Fichiers frontend
+│   ├── index.html    # Page principale
+│   ├── js/           # JavaScript
+│   │   ├── app.js       # Application principale
+│   │   ├── storage.js   # Gestion localStorage
+│   │   └── rss-parser.js # Parser RSS
+│   ├── css/          # Styles
+│   └── icons/        # Icônes PWA
+└── assets/           # Assets de test
+```
+
+## Licence
 
 GPL v3
