@@ -1,9 +1,14 @@
 # Podcastly 🎧
 
+> 📦 **Single-File Application** - Compile en un seul fichier HTML autonome !
+
 Application de podcast moderne, 100% client-side, développée avec **TypeScript** et **Vite**. Abonnez-vous à vos émissions favorites via RSS, toutes les données sont stockées localement dans votre navigateur avec localStorage.
+
+🚀 **[Guide de Démarrage Rapide →](QUICKSTART.md)**
 
 ## ✨ Fonctionnalités
 
+- ✅ **Single-File Build** : Compile en un seul fichier HTML (~50-80 KB) avec tout inline
 - ✅ **100% Client-Side** : Aucun backend nécessaire, tout fonctionne dans votre navigateur
 - ✅ **TypeScript** : Code type-safe et maintenable
 - ✅ **Vite** : Build ultra-rapide et Hot Module Replacement (HMR)
@@ -11,7 +16,7 @@ Application de podcast moderne, 100% client-side, développée avec **TypeScript
 - ✅ **Parsing RSS** : Analyse les flux RSS de podcasts directement dans le navigateur
 - ✅ **Support CORS** : Utilise un proxy pour récupérer n'importe quel flux RSS
 - ✅ **Interface Moderne** : Design épuré et responsive
-- ✅ **PWA Ready** : Installez l'application comme une app native avec service worker
+- ✅ **Portabilité Maximale** : Un seul fichier à déployer, partager, ou archiver
 - ✅ **Architecture Modulaire** : Code organisé en modules TypeScript
 
 ## 🚀 Démarrage Rapide
@@ -36,17 +41,29 @@ Visitez [http://localhost:5173](http://localhost:5173) pour utiliser l'applicati
 
 ```bash
 # Compiler TypeScript et construire pour la production
+# Génère un SEUL fichier HTML autonome dans dist/index.html
 npm run build
 
 # Prévisualiser le build de production
 npm run preview
 ```
 
+Le build génère un **fichier HTML unique et autonome** (`dist/index.html`) avec tout le CSS et JavaScript inline. Vous pouvez simplement ouvrir ce fichier dans un navigateur ou le déployer n'importe où !
+
+📖 **Voir [BUILD.md](BUILD.md) pour un guide détaillé du processus de build et déploiement.**
+
 ### Vérification des Types
 
 ```bash
 # Vérifier les types TypeScript sans compiler
 npm run type-check
+```
+
+### Commandes Utiles
+
+```bash
+# Build avec statistiques de taille du fichier
+npm run build:stats
 ```
 
 ## 📁 Structure du Projet
@@ -56,16 +73,18 @@ podcastly/
 ├── index.html              # Point d'entrée HTML
 ├── package.json            # Dépendances et scripts
 ├── tsconfig.json           # Configuration TypeScript
-├── vite.config.ts          # Configuration Vite + PWA
+├── vite.config.ts          # Configuration Vite + Single File
 ├── public/                 # Assets statiques
 │   └── icons/              # Icônes PWA
-└── src/                    # Code source TypeScript
-    ├── main.ts             # Point d'entrée de l'application
-    ├── types.ts            # Définitions de types TypeScript
-    ├── storage.ts          # Gestion du localStorage
-    ├── rss.ts              # Parsing des flux RSS
-    ├── ui.ts               # Rendu de l'interface
-    └── style.css           # Styles de l'application
+├── src/                    # Code source TypeScript
+│   ├── main.ts             # Point d'entrée de l'application
+│   ├── types.ts            # Définitions de types TypeScript
+│   ├── storage.ts          # Gestion du localStorage
+│   ├── rss.ts              # Parsing des flux RSS
+│   ├── ui.ts               # Rendu de l'interface
+│   └── style.css           # Styles de l'application
+└── dist/                   # Build de production
+    └── index.html          # ⭐ FICHIER UNIQUE AUTONOME
 ```
 
 ## 🎯 Utilisation
@@ -103,22 +122,32 @@ location.reload();
 
 Ou utilisez l'icône de corbeille 🗑️ pour supprimer un podcast spécifique.
 
-## 📱 Installation PWA
+## 📦 Déploiement
 
-L'application peut être installée comme Progressive Web App :
+Après avoir exécuté `npm run build`, vous obtenez un **seul fichier HTML autonome** dans `dist/index.html`. 
 
-1. Ouvrez l'application dans Chrome, Edge, ou Safari
-2. Cliquez sur l'icône d'installation dans la barre d'adresse
-3. Ou utilisez "Ajouter à l'écran d'accueil" sur mobile
-4. L'application fonctionnera alors comme une app native !
+### Options de déploiement :
 
-Le plugin `vite-plugin-pwa` génère automatiquement le service worker et le manifest lors du build.
+1. **Fichier local** : Ouvrez simplement `dist/index.html` dans votre navigateur
+2. **GitHub Pages** : Déposez le fichier dans votre repo et activez Pages
+3. **Netlify Drop** : Glissez-déposez le fichier sur [netlify.com/drop](https://app.netlify.com/drop)
+4. **N'importe quel hébergement** : Uploadez le fichier - pas de configuration serveur nécessaire !
+
+Le fichier contient :
+- ✅ Tout le HTML
+- ✅ Tout le CSS (inline dans `<style>`)
+- ✅ Tout le JavaScript compilé (inline dans `<script>`)
+- ✅ Aucune dépendance externe
+
+### Taille du fichier
+
+Le fichier final fait environ **~50-80 KB** (non compressé), ce qui est extrêmement léger pour une application complète !
 
 ## 🛠️ Technologies Utilisées
 
 - **[TypeScript](https://www.typescriptlang.org/)** : Langage typé pour plus de sécurité
 - **[Vite](https://vitejs.dev/)** : Build tool moderne et ultra-rapide
-- **[vite-plugin-pwa](https://vite-pwa-org.netlify.app/)** : Plugin PWA avec génération automatique du service worker
+- **[vite-plugin-singlefile](https://github.com/richardtallent/vite-plugin-singlefile)** : Génère un seul fichier HTML avec tout inline
 - **Vanilla CSS** : Pas de framework CSS, juste du bon vieux CSS
 - **DOM API** : Pas de framework frontend, manipulation native du DOM
 
@@ -131,6 +160,21 @@ Le plugin `vite-plugin-pwa` génère automatiquement le service worker et le man
 - Le proxy CORS (`allorigins.win`) est utilisé uniquement pour récupérer les flux RSS
 
 ## 🧪 Architecture Technique
+
+### Build Single-File
+
+Le projet utilise `vite-plugin-singlefile` pour compiler tout en **un seul fichier HTML** :
+
+**Pendant le développement** (`npm run dev`) :
+- Vite sert les fichiers séparément avec HMR
+- Hot reload instantané pour un développement rapide
+
+**En production** (`npm run build`) :
+- TypeScript est compilé en JavaScript
+- Tous les modules sont bundlés ensemble
+- Le CSS est extrait et inline dans une balise `<style>`
+- Le JavaScript est inline dans une balise `<script>`
+- Le résultat : **1 seul fichier HTML autonome** ✨
 
 ### Modules TypeScript
 
@@ -196,4 +240,23 @@ Développé avec ❤️ en TypeScript - zéro framework frontend, zéro backend 
 
 ---
 
-**Note** : Cette application utilise un proxy CORS public (`allorigins.win`) pour récupérer les flux RSS. Pour une utilisation en production, considérez l'utilisation de votre propre proxy CORS ou d'une extension navigateur qui désactive CORS localement.
+## ❓ FAQ
+
+### Pourquoi un seul fichier HTML ?
+
+- **Portabilité maximale** : Un seul fichier à partager, envoyer par email, ou mettre sur une clé USB
+- **Déploiement ultra-simple** : Pas de configuration serveur, pas de problème de chemins relatifs
+- **Archivage facile** : Sauvegardez l'application complète en un seul fichier
+- **Hors ligne par défaut** : Ouvrez le fichier n'importe où, même sans internet (sauf pour récupérer les flux RSS)
+
+### Comment ça marche avec les flux RSS externes ?
+
+L'application utilise un proxy CORS public (`allorigins.win`) pour contourner les restrictions CORS des navigateurs. Le flux RSS est récupéré via le proxy, puis parsé localement dans votre navigateur.
+
+### Où sont stockées mes données ?
+
+Toutes vos données (podcasts, épisodes) sont stockées dans le `localStorage` de votre navigateur. Elles ne quittent **jamais** votre machine. Si vous videz le cache du navigateur, les données seront perdues.
+
+---
+
+**Note** : Cette application utilise un proxy CORS public (`allorigins.win`) pour récupérer les flux RSS. Pour une utilisation en production, considérez l'utilisation de votre propre proxy CORS.

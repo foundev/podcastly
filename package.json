@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:stats": "tsc && vite build && node -e \"const fs=require('fs'); const stats=fs.statSync('dist/index.html'); console.log('\\n✅ Build complete!'); console.log('📦 File size:', (stats.size/1024).toFixed(2), 'KB'); console.log('📁 Location: dist/index.html\\n');\"",
     "preview": "vite preview",
     "type-check": "tsc --noEmit"
   },
@@ -13,7 +14,8 @@
   "devDependencies": {
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
-    "vite-plugin-pwa": "^0.17.4"
+    "vite-plugin-pwa": "^0.17.4",
+    "vite-plugin-singlefile": "^2.0.1"
   },
   "keywords": [
     "podcast",
