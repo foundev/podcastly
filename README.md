@@ -1,103 +1,103 @@
 # Podcastly 🎧
 
-> 📦 **Single-File Application** - Compile en un seul fichier HTML autonome !
+> 📦 **Single-File Application** - Compiles to a single standalone HTML file!
 
-Application de podcast moderne, 100% client-side, développée avec **TypeScript** et **Vite**. Abonnez-vous à vos émissions favorites via RSS, toutes les données sont stockées localement dans votre navigateur avec localStorage.
+A modern podcast application, 100% client-side, built with **TypeScript** and **Vite**. Subscribe to your favorite shows via RSS, all data is stored locally in your browser with localStorage.
 
-🚀 **[Guide de Démarrage Rapide →](QUICKSTART.md)**
+🚀 **[Quick Start Guide →](QUICKSTART.md)**
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-- ✅ **Single-File Build** : Compile en un seul fichier HTML (~50-80 KB) avec tout inline
-- ✅ **100% Client-Side** : Aucun backend nécessaire, tout fonctionne dans votre navigateur
-- ✅ **TypeScript** : Code type-safe et maintenable
-- ✅ **Vite** : Build ultra-rapide et Hot Module Replacement (HMR)
-- ✅ **Stockage Local** : Vos données restent privées et sont stockées dans localStorage
-- ✅ **Parsing RSS** : Analyse les flux RSS de podcasts directement dans le navigateur
-- ✅ **Support CORS** : Utilise un proxy pour récupérer n'importe quel flux RSS
-- ✅ **Interface Moderne** : Design épuré et responsive
-- ✅ **Portabilité Maximale** : Un seul fichier à déployer, partager, ou archiver
-- ✅ **Architecture Modulaire** : Code organisé en modules TypeScript
+- ✅ **Single-File Build** : Compiles to one HTML file (~50-80 KB) with everything inline
+- ✅ **100% Client-Side** : No backend needed, everything runs in your browser
+- ✅ **TypeScript** : Type-safe and maintainable code
+- ✅ **Vite** : Ultra-fast build and Hot Module Replacement (HMR)
+- ✅ **Local Storage** : Your data stays private and is stored in localStorage
+- ✅ **RSS Parsing** : Parse podcast RSS feeds directly in the browser
+- ✅ **CORS Support** : Uses a proxy to fetch any RSS feed
+- ✅ **Modern Interface** : Clean and responsive design
+- ✅ **Maximum Portability** : One file to deploy, share, or archive
+- ✅ **Modular Architecture** : Code organized in TypeScript modules
 
-## 🚀 Démarrage Rapide
+## 🚀 Quick Start
 
 ### Installation
 
 ```bash
-# Installer les dépendances
+# Install dependencies
 npm install
 ```
 
-### Développement
+### Development
 
 ```bash
-# Lancer le serveur de développement avec HMR
+# Start development server with HMR
 npm run dev
 ```
 
-Visitez [http://localhost:5173](http://localhost:5173) pour utiliser l'application.
+Visit [http://localhost:5173](http://localhost:5173) to use the application.
 
-### Build de Production
+### Production Build
 
 ```bash
-# Compiler TypeScript et construire pour la production
-# Génère un SEUL fichier HTML autonome dans dist/index.html
+# Compile TypeScript and build for production
+# Generates a SINGLE standalone HTML file in dist/index.html
 npm run build
 
-# Prévisualiser le build de production
+# Preview the production build
 npm run preview
 ```
 
-Le build génère un **fichier HTML unique et autonome** (`dist/index.html`) avec tout le CSS et JavaScript inline. Vous pouvez simplement ouvrir ce fichier dans un navigateur ou le déployer n'importe où !
+The build generates a **single standalone HTML file** (`dist/index.html`) with all CSS and JavaScript inline. You can simply open this file in a browser or deploy it anywhere!
 
-📖 **Voir [BUILD.md](BUILD.md) pour un guide détaillé du processus de build et déploiement.**
+📖 **See [BUILD.md](BUILD.md) for a detailed guide on building and deployment.**
 
-### Vérification des Types
+### Type Checking
 
 ```bash
-# Vérifier les types TypeScript sans compiler
+# Check TypeScript types without compiling
 npm run type-check
 ```
 
-### Commandes Utiles
+### Useful Commands
 
 ```bash
-# Build avec statistiques de taille du fichier
+# Build with file size statistics
 npm run build:stats
 ```
 
-## 📁 Structure du Projet
+## 📁 Project Structure
 
 ```
 podcastly/
-├── index.html              # Point d'entrée HTML
-├── package.json            # Dépendances et scripts
-├── tsconfig.json           # Configuration TypeScript
-├── vite.config.ts          # Configuration Vite + Single File
-├── public/                 # Assets statiques
-│   └── icons/              # Icônes PWA
-├── src/                    # Code source TypeScript
-│   ├── main.ts             # Point d'entrée de l'application
-│   ├── types.ts            # Définitions de types TypeScript
-│   ├── storage.ts          # Gestion du localStorage
-│   ├── rss.ts              # Parsing des flux RSS
-│   ├── ui.ts               # Rendu de l'interface
-│   └── style.css           # Styles de l'application
-└── dist/                   # Build de production
-    └── index.html          # ⭐ FICHIER UNIQUE AUTONOME
+├── index.html              # HTML entry point
+├── package.json            # Dependencies and scripts
+├── tsconfig.json           # TypeScript configuration
+├── vite.config.ts          # Vite + Single File configuration
+├── public/                 # Static assets
+│   └── icons/              # PWA icons
+├── src/                    # TypeScript source code
+│   ├── main.ts             # Application entry point
+│   ├── types.ts            # TypeScript type definitions
+│   ├── storage.ts          # localStorage management
+│   ├── rss.ts              # RSS feed parsing
+│   ├── ui.ts               # UI rendering logic
+│   └── style.css           # Application styles
+└── dist/                   # Production build
+    └── index.html          # ⭐ SINGLE STANDALONE FILE
 ```
 
-## 🎯 Utilisation
+## 🎯 Usage
 
-1. Lancez l'application avec `npm run dev`
-2. Collez l'URL d'un flux RSS de podcast dans le champ de saisie
-3. Cliquez sur "Subscribe"
-4. Parcourez les épisodes et écoutez-les directement
-5. Vos abonnements sont sauvegardés automatiquement dans votre navigateur
+1. Launch the application with `npm run dev`
+2. Paste a podcast RSS feed URL into the input field
+3. Click "Subscribe"
+4. Browse episodes and listen directly
+5. Your subscriptions are automatically saved in your browser
 
-### Exemples de Flux RSS Populaires
+### Popular RSS Feed Examples
 
-Essayez ces flux pour commencer :
+Try these feeds to get started:
 
 ```
 https://feeds.fireside.fm/bibleinayear/rss
@@ -105,158 +105,158 @@ https://feeds.megaphone.fm/hubermanlab
 https://feeds.simplecast.com/54nAGcIl
 ```
 
-## 💾 Stockage des Données
+## 💾 Data Storage
 
-Toutes les données sont stockées dans `localStorage` de votre navigateur :
-- **`podcastly_podcasts`** : Liste des podcasts et leurs épisodes
-- **`podcastly_selected_id`** : ID du podcast actuellement sélectionné
+All data is stored in your browser's `localStorage`:
+- **`podcastly_podcasts`** : List of podcasts and their episodes
+- **`podcastly_selected_id`** : ID of currently selected podcast
 
-### Réinitialisation
+### Reset
 
-Pour **réinitialiser** l'application, ouvrez la console du navigateur et tapez :
+To **reset** the application, open the browser console and type:
 
 ```javascript
 localStorage.clear();
 location.reload();
 ```
 
-Ou utilisez l'icône de corbeille 🗑️ pour supprimer un podcast spécifique.
+Or use the trash icon 🗑️ to delete a specific podcast.
 
-## 📦 Déploiement
+## 📦 Deployment
 
-Après avoir exécuté `npm run build`, vous obtenez un **seul fichier HTML autonome** dans `dist/index.html`. 
+After running `npm run build`, you get a **single standalone HTML file** in `dist/index.html`. 
 
-### Options de déploiement :
+### Deployment options:
 
-1. **Fichier local** : Ouvrez simplement `dist/index.html` dans votre navigateur
-2. **GitHub Pages** : Déposez le fichier dans votre repo et activez Pages
-3. **Netlify Drop** : Glissez-déposez le fichier sur [netlify.com/drop](https://app.netlify.com/drop)
-4. **N'importe quel hébergement** : Uploadez le fichier - pas de configuration serveur nécessaire !
+1. **Local file** : Simply open `dist/index.html` in your browser
+2. **GitHub Pages** : Drop the file in your repo and enable Pages
+3. **Netlify Drop** : Drag and drop the file to [netlify.com/drop](https://app.netlify.com/drop)
+4. **Any hosting** : Upload the file - no server configuration needed!
 
-Le fichier contient :
-- ✅ Tout le HTML
-- ✅ Tout le CSS (inline dans `<style>`)
-- ✅ Tout le JavaScript compilé (inline dans `<script>`)
-- ✅ Aucune dépendance externe
+The file contains:
+- ✅ All HTML
+- ✅ All CSS (inline in `<style>`)
+- ✅ All compiled JavaScript (inline in `<script>`)
+- ✅ No external dependencies
 
-### Taille du fichier
+### File size
 
-Le fichier final fait environ **~50-80 KB** (non compressé), ce qui est extrêmement léger pour une application complète !
+The final file is approximately **~50-80 KB** (uncompressed), which is extremely lightweight for a complete application!
 
-## 🛠️ Technologies Utilisées
+## 🛠️ Technologies Used
 
-- **[TypeScript](https://www.typescriptlang.org/)** : Langage typé pour plus de sécurité
-- **[Vite](https://vitejs.dev/)** : Build tool moderne et ultra-rapide
-- **[vite-plugin-singlefile](https://github.com/richardtallent/vite-plugin-singlefile)** : Génère un seul fichier HTML avec tout inline
-- **Vanilla CSS** : Pas de framework CSS, juste du bon vieux CSS
-- **DOM API** : Pas de framework frontend, manipulation native du DOM
+- **[TypeScript](https://www.typescriptlang.org/)** : Typed language for better safety
+- **[Vite](https://vitejs.dev/)** : Modern and ultra-fast build tool
+- **[vite-plugin-singlefile](https://github.com/richardtallent/vite-plugin-singlefile)** : Generates a single HTML file with everything inline
+- **Vanilla CSS** : No CSS framework, just good old CSS
+- **DOM API** : No frontend framework, native DOM manipulation
 
-## 🔒 Vie Privée et Sécurité
+## 🔒 Privacy and Security
 
-- **Aucune donnée n'est envoyée à un serveur** : tout reste dans votre navigateur
-- **Pas de tracking, pas d'analytics** : votre vie privée est respectée
-- **Pas de compte requis** : commencez à utiliser immédiatement
-- **Code Open Source** : vous pouvez auditer le code vous-même
-- Le proxy CORS (`allorigins.win`) est utilisé uniquement pour récupérer les flux RSS
+- **No data is sent to a server** : everything stays in your browser
+- **No tracking, no analytics** : your privacy is respected
+- **No account required** : start using immediately
+- **Open Source code** : you can audit the code yourself
+- The CORS proxy (`allorigins.win`) is only used to fetch RSS feeds
 
-## 🧪 Architecture Technique
+## 🧪 Technical Architecture
 
-### Build Single-File
+### Single-File Build
 
-Le projet utilise `vite-plugin-singlefile` pour compiler tout en **un seul fichier HTML** :
+The project uses `vite-plugin-singlefile` to compile everything into **one HTML file**:
 
-**Pendant le développement** (`npm run dev`) :
-- Vite sert les fichiers séparément avec HMR
-- Hot reload instantané pour un développement rapide
+**During development** (`npm run dev`):
+- Vite serves files separately with HMR
+- Instant hot reload for fast development
 
-**En production** (`npm run build`) :
-- TypeScript est compilé en JavaScript
-- Tous les modules sont bundlés ensemble
-- Le CSS est extrait et inline dans une balise `<style>`
-- Le JavaScript est inline dans une balise `<script>`
-- Le résultat : **1 seul fichier HTML autonome** ✨
+**In production** (`npm run build`):
+- TypeScript is compiled to JavaScript
+- All modules are bundled together
+- CSS is extracted and inlined in a `<style>` tag
+- JavaScript is inlined in a `<script>` tag
+- Result: **1 single standalone HTML file** ✨
 
-### Modules TypeScript
+### TypeScript Modules
 
-L'application est organisée en modules distincts :
+The application is organized into separate modules:
 
-- **`types.ts`** : Définitions d'interfaces TypeScript pour type safety
-- **`storage.ts`** : Abstraction du localStorage avec méthodes typées
-- **`rss.ts`** : Parser RSS robuste avec support des namespaces iTunes/Media
-- **`ui.ts`** : Logique de rendu de l'interface utilisateur
-- **`main.ts`** : Orchestration et gestion de l'état de l'application
+- **`types.ts`** : TypeScript interface definitions for type safety
+- **`storage.ts`** : localStorage abstraction with typed methods
+- **`rss.ts`** : Robust RSS parser with iTunes/Media namespace support
+- **`ui.ts`** : UI rendering logic
+- **`main.ts`** : Application orchestration and state management
 
-### Gestion de l'État
+### State Management
 
-L'état est géré de manière simple avec une classe `PodcastApp` :
-- État immutable stocké dans un objet `AppState`
-- Synchronisation automatique avec localStorage
-- Rendu réactif de l'interface lors des changements
+State is managed simply with a `PodcastApp` class:
+- Immutable state stored in an `AppState` object
+- Automatic synchronization with localStorage
+- Reactive UI rendering on changes
 
-### Parser RSS
+### RSS Parser
 
-Le parser supporte :
-- Flux RSS 2.0 standard
-- Extensions iTunes (`itunes:*`)
-- Extensions Media RSS (`media:*`)
-- Gestion robuste des dates et durées
-- Extraction d'images depuis plusieurs sources
+The parser supports:
+- Standard RSS 2.0 feeds
+- iTunes extensions (`itunes:*`)
+- Media RSS extensions (`media:*`)
+- Robust date and duration handling
+- Image extraction from multiple sources
 
-## 🤝 Contribution
+## 🤝 Contributing
 
-Les contributions sont les bienvenues ! N'hésitez pas à :
-- 🐛 Signaler des bugs via les issues GitHub
-- 💡 Proposer de nouvelles fonctionnalités
-- 📖 Améliorer la documentation
-- 🔧 Soumettre des pull requests
+Contributions are welcome! Feel free to:
+- 🐛 Report bugs via GitHub issues
+- 💡 Propose new features
+- 📖 Improve documentation
+- 🔧 Submit pull requests
 
-### Développement
+### Development
 
 ```bash
-# Cloner le repo
+# Clone the repo
 git clone https://github.com/your-username/podcastly.git
 cd podcastly
 
-# Installer les dépendances
+# Install dependencies
 npm install
 
-# Lancer en mode dev
+# Launch in dev mode
 npm run dev
 
-# Vérifier les types
+# Check types
 npm run type-check
 
-# Build de production
+# Production build
 npm run build
 ```
 
-## 📄 Licence
+## 📄 License
 
-GPL v3 - Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+GPL v3 - See the [LICENSE](LICENSE) file for details.
 
-## 🎨 Crédits
+## 🎨 Credits
 
-Développé avec ❤️ en TypeScript - zéro framework frontend, zéro backend !
+Built with ❤️ in TypeScript - zero frontend framework, zero backend!
 
 ---
 
 ## ❓ FAQ
 
-### Pourquoi un seul fichier HTML ?
+### Why a single HTML file?
 
-- **Portabilité maximale** : Un seul fichier à partager, envoyer par email, ou mettre sur une clé USB
-- **Déploiement ultra-simple** : Pas de configuration serveur, pas de problème de chemins relatifs
-- **Archivage facile** : Sauvegardez l'application complète en un seul fichier
-- **Hors ligne par défaut** : Ouvrez le fichier n'importe où, même sans internet (sauf pour récupérer les flux RSS)
+- **Maximum portability** : One file to share, send by email, or put on a USB drive
+- **Ultra-simple deployment** : No server configuration, no relative path issues
+- **Easy archiving** : Save the complete application in one file
+- **Offline by default** : Open the file anywhere, even without internet (except for fetching RSS feeds)
 
-### Comment ça marche avec les flux RSS externes ?
+### How does it work with external RSS feeds?
 
-L'application utilise un proxy CORS public (`allorigins.win`) pour contourner les restrictions CORS des navigateurs. Le flux RSS est récupéré via le proxy, puis parsé localement dans votre navigateur.
+The application uses a public CORS proxy (`allorigins.win`) to bypass browser CORS restrictions. The RSS feed is fetched via the proxy, then parsed locally in your browser.
 
-### Où sont stockées mes données ?
+### Where is my data stored?
 
-Toutes vos données (podcasts, épisodes) sont stockées dans le `localStorage` de votre navigateur. Elles ne quittent **jamais** votre machine. Si vous videz le cache du navigateur, les données seront perdues.
+All your data (podcasts, episodes) is stored in your browser's `localStorage`. It **never** leaves your machine. If you clear the browser cache, the data will be lost.
 
 ---
 
-**Note** : Cette application utilise un proxy CORS public (`allorigins.win`) pour récupérer les flux RSS. Pour une utilisation en production, considérez l'utilisation de votre propre proxy CORS.
+**Note** : This application uses a public CORS proxy (`allorigins.win`) to fetch RSS feeds. For production use, consider using your own CORS proxy.

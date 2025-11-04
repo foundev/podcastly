@@ -1,27 +1,27 @@
-# Guide de Build - Fichier HTML Unique
+# Build Guide - Single HTML File
 
-## Commandes de Build
+## Build Commands
 
 ```bash
-# Build standard
+# Standard build
 npm run build
 
-# Build avec statistiques de taille
+# Build with size statistics
 npm run build:stats
 ```
 
-## Résultat du Build
+## Build Output
 
-Après l'exécution de `npm run build`, vous obtiendrez :
+After running `npm run build`, you'll get:
 
 ```
 dist/
-└── index.html    # ⭐ Votre application complète en UN SEUL fichier
+└── index.html    # ⭐ Your complete application in ONE file
 ```
 
-## Structure du Fichier Final
+## Final File Structure
 
-Le fichier `dist/index.html` contient :
+The `dist/index.html` file contains:
 
 ```html
 <!DOCTYPE html>
@@ -31,58 +31,58 @@ Le fichier `dist/index.html` contient :
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Podcastly</title>
   
-  <!-- Tout le CSS inline -->
+  <!-- All CSS inline -->
   <style>
-    /* ~3-5 KB de CSS compilé */
+    /* ~3-5 KB of compiled CSS */
     .app-header { ... }
     .card { ... }
-    /* ... tous les styles ... */
+    /* ... all styles ... */
   </style>
 </head>
 <body>
-  <!-- HTML de l'application -->
+  <!-- Application HTML -->
   <header class="app-header">...</header>
   <main class="app-content">...</main>
   <template>...</template>
   
-  <!-- Tout le JavaScript inline -->
+  <!-- All JavaScript inline -->
   <script type="module">
-    /* ~40-60 KB de JavaScript compilé depuis TypeScript */
-    // Tous les modules bundlés et minifiés
+    /* ~40-60 KB of JavaScript compiled from TypeScript */
+    // All modules bundled and minified
     // storage.ts, rss.ts, ui.ts, main.ts
   </script>
 </body>
 </html>
 ```
 
-## Taille du Fichier
+## File Size
 
-- **Non compressé** : ~50-80 KB
-- **Gzip compressé** : ~15-25 KB (si servi par un serveur web)
+- **Uncompressed** : ~50-80 KB
+- **Gzip compressed** : ~15-25 KB (if served by a web server)
 
-## Utilisation du Fichier
+## Using the File
 
-### Option 1 : Ouverture Directe
+### Option 1: Direct Opening
 ```bash
-# Ouvrir directement dans le navigateur par défaut
+# Open directly in default browser
 open dist/index.html        # macOS
 xdg-open dist/index.html    # Linux
 start dist/index.html       # Windows
 ```
 
-### Option 2 : Serveur Local
+### Option 2: Local Server
 ```bash
-# Avec Python
+# With Python
 python -m http.server 8080 --directory dist
 
-# Avec Node.js
+# With Node.js
 npx serve dist
 
-# Avec PHP
+# With PHP
 php -S localhost:8080 -t dist
 ```
 
-### Option 3 : Déploiement
+### Option 3: Deployment
 
 **GitHub Pages** :
 ```bash
@@ -90,83 +90,83 @@ cp dist/index.html docs/index.html
 git add docs/index.html
 git commit -m "Deploy app"
 git push
-# Activez Pages dans les settings du repo
+# Enable Pages in repo settings
 ```
 
 **Netlify Drop** :
-1. Ouvrez [netlify.com/drop](https://app.netlify.com/drop)
-2. Glissez-déposez `dist/index.html`
-3. C'est en ligne !
+1. Open [netlify.com/drop](https://app.netlify.com/drop)
+2. Drag and drop `dist/index.html`
+3. You're live!
 
-**N'importe quel hébergement** :
-- Uploadez simplement `dist/index.html` via FTP/SFTP
-- Aucune configuration serveur nécessaire
-- Fonctionne même sur des hébergements très basiques
+**Any hosting** :
+- Simply upload `dist/index.html` via FTP/SFTP
+- No server configuration needed
+- Works even on very basic hosting
 
-## Vérification du Build
+## Build Verification
 
-Après le build, vous pouvez vérifier que tout est inline :
+After building, you can verify everything is inline:
 
 ```bash
-# Vérifier qu'il n'y a pas de liens externes
+# Check for external links
 grep -E 'href="|src="(?!data:)' dist/index.html
 
-# Devrait seulement montrer des liens de type <a href> pour la navigation
-# Aucun <link> ou <script src> ne devrait exister
+# Should only show <a href> links for navigation
+# No <link> or <script src> should exist
 ```
 
-## Optimisations Automatiques
+## Automatic Optimizations
 
-Vite applique automatiquement :
+Vite automatically applies:
 
-- ✅ **Minification** du JavaScript (Terser)
-- ✅ **Minification** du CSS
-- ✅ **Tree-shaking** pour supprimer le code non utilisé
-- ✅ **Bundling** de tous les modules en un seul
-- ✅ **Inlining** de tout le code dans le HTML
+- ✅ **JavaScript minification** (Terser)
+- ✅ **CSS minification**
+- ✅ **Tree-shaking** to remove unused code
+- ✅ **Bundling** of all modules into one
+- ✅ **Inlining** of all code in HTML
 
 ## Limitations
 
-### Ce qui fonctionne :
-- ✅ Ouverture du fichier en local (file://)
-- ✅ Hébergement sur n'importe quel serveur web
-- ✅ localStorage pour sauvegarder les données
-- ✅ Récupération de flux RSS via proxy CORS
+### What works:
+- ✅ Opening the file locally (file://)
+- ✅ Hosting on any web server
+- ✅ localStorage to save data
+- ✅ Fetching RSS feeds via CORS proxy
 
-### Ce qui ne fonctionne pas :
-- ❌ Les icônes SVG du dossier `public/` ne sont pas incluses (trop volumineuses)
-- ❌ Service Worker PWA (désactivé pour le single-file)
-- ❌ Images externes non inline (mais les flux RSS peuvent les référencer)
+### What doesn't work:
+- ❌ SVG icons from `public/` folder are not included (too large)
+- ❌ PWA Service Worker (disabled for single-file)
+- ❌ External images not inlined (but RSS feeds can reference them)
 
-## Dépannage
+## Troubleshooting
 
-### Le fichier est trop volumineux ?
+### File is too large?
 
-Modifiez `vite.config.ts` :
+Modify `vite.config.ts`:
 ```typescript
 build: {
   cssCodeSplit: false,
-  assetsInlineLimit: 10000, // Réduire à 10KB au lieu de 100MB
+  assetsInlineLimit: 10000, // Reduce to 10KB instead of 100MB
 }
 ```
 
-### Besoin de plusieurs fichiers ?
+### Need multiple files?
 
-Retirez le plugin `vite-plugin-singlefile` de `vite.config.ts` pour revenir à un build standard avec plusieurs fichiers.
+Remove the `vite-plugin-singlefile` plugin from `vite.config.ts` to return to a standard build with multiple files.
 
-### Problèmes CORS ?
+### CORS issues?
 
-Le proxy CORS (`allorigins.win`) est public et peut être lent. Considérez :
-- Utiliser votre propre proxy CORS
-- Héberger l'app sur un domaine HTTPS
-- Utiliser une extension navigateur pour désactiver CORS en développement
+The CORS proxy (`allorigins.win`) is public and can be slow. Consider:
+- Using your own CORS proxy
+- Hosting the app on an HTTPS domain
+- Using a browser extension to disable CORS in development
 
 ## Performance
 
-Le fichier unique est optimisé pour :
-- ⚡ **Chargement rapide** : Un seul round-trip HTTP
-- 💾 **Cache navigateur** : Le fichier entier est mis en cache
-- 📦 **Compression** : Gzip/Brotli réduisent la taille de ~70%
-- 🚀 **Parsing** : Pas d'attente de ressources externes
+The single file is optimized for:
+- ⚡ **Fast loading** : Only one HTTP round-trip
+- 💾 **Browser cache** : Entire file is cached
+- 📦 **Compression** : Gzip/Brotli reduce size by ~70%
+- 🚀 **Parsing** : No waiting for external resources
 
-Temps de chargement typique : **< 100ms** sur une connexion moyenne.
+Typical loading time: **< 100ms** on average connection.

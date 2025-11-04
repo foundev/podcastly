@@ -1,123 +1,123 @@
-# 🚀 Guide de Démarrage Rapide - Podcastly
+# 🚀 Quick Start Guide - Podcastly
 
-## En 3 étapes simples
+## In 3 simple steps
 
-### 1️⃣ Installer les dépendances
+### 1️⃣ Install dependencies
 
 ```bash
 npm install
 ```
 
-### 2️⃣ Développement
+### 2️⃣ Development
 
 ```bash
 npm run dev
 ```
 
-Ouvrez [http://localhost:5173](http://localhost:5173) 🎉
+Open [http://localhost:5173](http://localhost:5173) 🎉
 
-### 3️⃣ Build de Production
+### 3️⃣ Production Build
 
 ```bash
 npm run build:stats
 ```
 
-Résultat : **Un seul fichier HTML** dans `dist/index.html` ! 📦
+Result: **One single HTML file** in `dist/index.html`! 📦
 
 ---
 
-## 🎯 Utilisation Rapide
+## 🎯 Quick Usage
 
-### Essayer un flux RSS
+### Try an RSS feed
 
-Collez ceci dans le champ "RSS Feed URL" :
+Paste this in the "RSS Feed URL" field:
 
 ```
 https://feeds.fireside.fm/bibleinayear/rss
 ```
 
-Cliquez sur "Subscribe" et explorez les épisodes !
+Click "Subscribe" and explore episodes!
 
 ---
 
-## 📤 Partager votre build
+## 📤 Share your build
 
-### Option 1 : Fichier Local
+### Option 1: Local File
 ```bash
-# Ouvrir le fichier build dans le navigateur
+# Open the built file in browser
 open dist/index.html
 ```
 
-### Option 2 : Déploiement Instantané
+### Option 2: Instant Deployment
 
-**Netlify (le plus simple)** :
-1. Allez sur [netlify.com/drop](https://app.netlify.com/drop)
-2. Glissez-déposez `dist/index.html`
-3. ✅ Votre app est en ligne !
+**Netlify (easiest)** :
+1. Go to [netlify.com/drop](https://app.netlify.com/drop)
+2. Drag and drop `dist/index.html`
+3. ✅ Your app is live!
 
 **GitHub Pages** :
 ```bash
-# Copier dans un dossier docs/
+# Copy to docs/ folder
 mkdir -p docs
 cp dist/index.html docs/
 git add docs/
 git commit -m "Deploy Podcastly"
 git push
 ```
-Puis activez GitHub Pages dans les paramètres du repo (source : `/docs`)
+Then enable GitHub Pages in repo settings (source: `/docs`)
 
 ---
 
 ## 💡 Tips
 
-### Réinitialiser les données
-Ouvrir la console navigateur (F12) et taper :
+### Reset data
+Open browser console (F12) and type:
 ```javascript
 localStorage.clear()
 location.reload()
 ```
 
-### Changer le proxy CORS
-Créer `.env.local` avec :
+### Change CORS proxy
+Create `.env.local` with:
 ```env
-VITE_CORS_PROXY=https://votre-proxy.com/api?url=
+VITE_CORS_PROXY=https://your-proxy.com/api?url=
 ```
 
-### Voir les types TypeScript
+### Check TypeScript types
 ```bash
 npm run type-check
 ```
 
 ---
 
-## 📚 Documentation Complète
+## 📚 Complete Documentation
 
-- **[README.md](README.md)** - Documentation principale
-- **[BUILD.md](BUILD.md)** - Guide détaillé du build et déploiement
+- **[README.md](README.md)** - Main documentation
+- **[BUILD.md](BUILD.md)** - Detailed build and deployment guide
 
 ---
 
-## ⚡ Commandes Essentielles
+## ⚡ Essential Commands
 
-| Commande | Description |
+| Command | Description |
 |----------|-------------|
-| `npm install` | Installer les dépendances |
-| `npm run dev` | Serveur de développement avec HMR |
-| `npm run build` | Build de production (fichier unique) |
-| `npm run build:stats` | Build + affiche la taille du fichier |
-| `npm run preview` | Prévisualiser le build localement |
-| `npm run type-check` | Vérifier les types TypeScript |
+| `npm install` | Install dependencies |
+| `npm run dev` | Development server with HMR |
+| `npm run build` | Production build (single file) |
+| `npm run build:stats` | Build + show file size |
+| `npm run preview` | Preview build locally |
+| `npm run type-check` | Check TypeScript types |
 
 ---
 
-## 🎨 Exemples de Flux RSS Populaires
+## 🎨 Popular RSS Feed Examples
 
 ```
 # Tech
 https://feeds.megaphone.fm/hubermanlab
 https://feeds.simplecast.com/54nAGcIl
 
-# Actualités
+# News
 https://feeds.npr.org/500005/podcast.xml
 
 # Culture
@@ -126,4 +126,4 @@ https://feeds.fireside.fm/bibleinayear/rss
 
 ---
 
-**Bon podcast ! 🎧**
+**Happy podcasting! 🎧**
