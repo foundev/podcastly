@@ -7,35 +7,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("subscribe-form");
   form.addEventListener("submit", handleSubscribe);
 
-  loadPodcasts();
+  refreshPodcasts();
   registerServiceWorker();
 });
 
-async function loadPodcasts() {
+function refreshPodcasts() {
   try {
-    const response = await fetch("/api/podcasts");
-    if (!response.ok) {
-      throw new Error(`Failed to load podcasts (${response.status})`);
-    }
-    const data = await response.json();
-    state.podcasts = data.podcasts || [];
+    state.podcasts = loadPodcasts();
+    state.podcasts.sort((a, b) => {
+      const dateA = a.updated_at || "1970-01-01";
+      const dateB = b.updated_at || "1970-01-01";
+      return dateB.localeCompare(dateA);
+    });
     renderPodcasts();
     if (state.selectedPodcastId) {
-      await loadEpisodes(state.selectedPodcastId);
+      loadEpisodes(state.selectedPodcastId);
     }
   } catch (error) {
     setStatus(error.message, true);
   }
 }
 
-async function loadEpisodes(podcastId) {
+function loadEpisodes(podcastId) {
   try {
-    const response = await fetch(`/api/podcasts/${podcastId}/episodes`);
-    if (!response.ok) {
-      throw new Error(`Failed to load episodes (${response.status})`);
+    const podcast = getPodcast(podcastId);
+    if (!podcast) {
+      setStatus("Podcast non trouvé", true);
+      return;
     }
-    const data = await response.json();
-    renderEpisodes(data);
+    const episodes = getEpisodesForPodcast(podcastId);
+    renderEpisodes({ podcast, episodes });
   } catch (error) {
     setStatus(error.message, true);
   }
@@ -49,27 +50,19 @@ async function handleSubscribe(event) {
     return;
   }
 
-  setStatus("Subscribing…");
+  setStatus("Abonnement en cours…");
   try {
-    const response = await fetch("/api/podcasts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ feed_url: feedUrl }),
-    });
-    if (!response.ok) {
-      const data = await safeJson(response);
-      throw new Error(data?.error || "Subscription failed");
-    }
-    const data = await response.json();
-    setStatus(`Subscribed to ${data.podcast.title}`, false);
+    const feedData = await subscribeToFeed(feedUrl);
+    const podcast = addPodcast(feedData);
+    addEpisodesToPodcast(podcast.id, feedData.episodes);
+
+    setStatus(`Abonné à ${podcast.title}`, false);
     input.value = "";
-    state.selectedPodcastId = data.podcast.id;
-    await loadPodcasts();
-    await loadEpisodes(state.selectedPodcastId);
+    state.selectedPodcastId = podcast.id;
+    refreshPodcasts();
+    loadEpisodes(state.selectedPodcastId);
   } catch (error) {
-    setStatus(error.message, true);
+    setStatus(error.message || "Échec de l'abonnement", true);
   }
 }
 
@@ -176,13 +169,6 @@ function setStatus(message, isError = false) {
   node.classList.toggle("is-error", Boolean(isError));
 }
 
-async function safeJson(response) {
-  try {
-    return await response.json();
-  } catch (error) {
-    return null;
-  }
-}
 
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) {

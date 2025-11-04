@@ -1,2 +1,0 @@
-# Podcastly uses only the Python standard library at runtime.
-# Install pytest separately (pip install pytest) when running the test suite.

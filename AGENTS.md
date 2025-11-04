@@ -1,35 +1,43 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- Keep `main.py` minimal; implement RSS parsing, catalog adapters, and playback control inside `podcastly/`.
-- Group modules into `podcastly/feeds/`, `podcastly/services/`, and `podcastly/ui/`, and mirror that layout inside `tests/`.
-- Place sample feeds and mocked catalog payloads in `assets/samples/`; keep vanilla JS/CSS assets under `web/js/` and `web/css/`.
+- Toute l'application fonctionne dans le navigateur (JavaScript vanilla)
+- Les fichiers frontend sont dans `web/` avec la structure suivante :
+  - `web/js/` - JavaScript (app.js, storage.js, rss-parser.js)
+  - `web/css/` - Styles CSS
+  - `web/icons/` - Icônes pour la PWA
+- Les échantillons de flux RSS sont dans `assets/samples/`
 
 ## Build, Test, and Development Commands
-- `python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt` – bootstrap dependencies.
-- `python main.py --rss-url=https://example.com/feed.xml` – run the local prototype against a feed; add flags instead of editing source.
-- `python -m http.server 8000 --directory web` – host the static JS frontend during manual testing.
-- `pytest -vv` – execute the backend test suite with verbose output when debugging failures.
+- Utilisez un serveur HTTP statique pour servir les fichiers dans `web/`
+- Options disponibles :
+  - `python -m http.server 8000 --directory web` (si Python est installé)
+  - `npx http-server web -p 8000` (si Node.js est installé)
+  - `php -S 127.0.0.1:8000 -t web` (si PHP est installé)
+  - `./serve.sh` (script automatique qui détecte un serveur disponible)
 
-- Stick to vanilla Python and browser JavaScript: 4-space indentation, `snake_case` functions, `PascalCase` classes, and modules like `rss_reader.py`.
-- Run `black` (88 cols) and `ruff` before committing Python changes; format frontend files with `npx prettier --write`.
-- Favor f-strings for logging and keep modules side-effect free so CLI and browser layers can reuse them.
+## Code Style
+- JavaScript vanilla uniquement : pas de frameworks, pas de build tools
+- Utilisez `camelCase` pour les fonctions JavaScript
+- Indentation de 2 espaces pour JavaScript
+- Formatage avec `npx prettier --write` pour les fichiers frontend
 
 ## Testing Guidelines
-- Place tests under `tests/feeds/` and `tests/services/`; follow the `test_<module>.py` naming pattern.
-- Cover new RSS parsing logic with both happy-path and malformed-feed cases; mock remote catalog calls using fixtures in `assets/samples/`.
-- Target ≥85% statement coverage; note gaps in the PR if coverage dips temporarily.
+- Testez manuellement en ouvrant l'application dans un navigateur
+- Vérifiez que localStorage fonctionne correctement
+- Testez avec différents flux RSS pour valider le parser
 
 ## Commit & Pull Request Guidelines
-- Write imperative commit subjects (~50 chars) with context in the body; reference issues using `Fixes #123` when closing tickets.
-- Squash WIP commits before opening a PR, and ensure `pytest` plus manual feed checks succeed.
-- PR descriptions should outline the new capability (e.g., catalog adapter), list test evidence, and include UI screenshots if the vanilla JS layer changes.
+- Écrivez des messages de commit impératifs (~50 caractères) avec le contexte dans le corps
+- Référencez les issues en utilisant `Fixes #123` lors de la fermeture de tickets
+- Les descriptions de PR doivent décrire la nouvelle fonctionnalité et inclure des captures d'écran si l'interface change
 
 ## Feature Scope & Roadmap
-- MVP: ingest RSS feeds, cache episode metadata, and expose a simple queue to the vanilla JS player.
-- Near term: add adapters in `podcastly/services/` for common directories (Apple, Spotify, Pocket Casts).
-- Long term: track user preferences and playback history while keeping the Python backend framework-free.
+- MVP : parser les flux RSS, stocker les métadonnées d'épisodes dans localStorage, exposer une simple queue au lecteur JavaScript
+- À court terme : ajouter des adaptateurs pour les répertoires populaires (Apple, Spotify, Pocket Casts)
+- À long terme : suivre les préférences utilisateur et l'historique de lecture dans localStorage
 
 ## Security & Configuration Tips
-- Do not commit API keys or catalog tokens; load them from `.env` files ignored by git and document required variables in `.env.example`.
-- Validate feed URLs and sanitize network responses to avoid SSRF and markup injection.
+- Validez les URLs de flux et sanitisez les réponses réseau pour éviter SSRF et l'injection de markup
+- Toutes les données sont stockées localement dans le navigateur - aucune donnée n'est envoyée à un serveur
+- Soyez conscient des limites de localStorage (généralement ~5-10MB par domaine)
