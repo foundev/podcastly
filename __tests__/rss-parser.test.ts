@@ -30,7 +30,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+        text: jest.fn().mockResolvedValue(xmlResponse),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -53,7 +53,7 @@ describe("RSS Parser Module", () => {
     test("should propagate parse errors", async () => {
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: "invalid xml" }),
+        text: jest.fn().mockResolvedValue("invalid xml"),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -89,7 +89,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+        text: jest.fn().mockResolvedValue(xmlResponse),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -117,7 +117,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+        text: jest.fn().mockResolvedValue(xmlResponse),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -136,7 +136,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+        text: jest.fn().mockResolvedValue(xmlResponse),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -151,7 +151,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+        text: jest.fn().mockResolvedValue(xmlResponse),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -177,7 +177,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+        text: jest.fn().mockResolvedValue(xmlResponse),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -210,7 +210,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+        text: jest.fn().mockResolvedValue(xmlResponse),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -241,7 +241,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+        text: jest.fn().mockResolvedValue(xmlResponse),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
