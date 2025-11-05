@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 import {
   loadPodcasts,
   getPodcast,
@@ -13,6 +17,24 @@ import Header from './components/Header';
 import SubscribeForm from './components/SubscribeForm';
 import PodcastList from './components/PodcastList';
 import EpisodeList from './components/EpisodeList';
+
+// Create Material Design theme with custom colors
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3f51b5', // Indigo
+    },
+    secondary: {
+      main: '#2196f3', // Blue
+    },
+    background: {
+      default: '#f4f6fb',
+    },
+  },
+  typography: {
+    fontFamily: '"Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif',
+  },
+});
 
 function App() {
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
@@ -88,25 +110,32 @@ function App() {
   };
 
   return (
-    <>
-      <Header />
-      <main className="app-content">
-        <SubscribeForm
-          onSubscribe={handleSubscribe}
-          statusMessage={statusMessage}
-          isError={isError}
-        />
-        <PodcastList
-          podcasts={podcasts}
-          selectedPodcastId={selectedPodcastId}
-          onSelectPodcast={handleSelectPodcast}
-        />
-        <EpisodeList
-          podcast={selectedPodcast}
-          episodes={episodes}
-        />
-      </main>
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+        <Header />
+        <Container maxWidth="lg">
+          <Box sx={{ py: 4 }}>
+            <SubscribeForm
+              onSubscribe={handleSubscribe}
+              statusMessage={statusMessage}
+              isError={isError}
+            />
+            <Box sx={{ mt: 3, display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+              <PodcastList
+                podcasts={podcasts}
+                selectedPodcastId={selectedPodcastId}
+                onSelectPodcast={handleSelectPodcast}
+              />
+              <EpisodeList
+                podcast={selectedPodcast}
+                episodes={episodes}
+              />
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 }
 
