@@ -7,7 +7,7 @@ import {
   addEpisodesToPodcast,
   loadPodcasts,
   getEpisodesForPodcast,
-} from "../src/storage.js";
+} from "../src/storage";
 
 // Mock navigator.serviceWorker
 Object.defineProperty(navigator, "serviceWorker", {

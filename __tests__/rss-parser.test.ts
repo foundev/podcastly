@@ -2,7 +2,7 @@
  * Tests for rss-parser.ts
  */
 
-import { subscribeToFeed, FeedError } from "../src/rss-parser.js";
+import { subscribeToFeed, FeedError } from "../src/rss-parser";
 
 // Mock fetch globally
 global.fetch = jest.fn() as jest.Mock;

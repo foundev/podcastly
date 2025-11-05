@@ -9,7 +9,7 @@ import {
   getEpisodesForPodcast,
   addEpisodesToPodcast,
   deletePodcast,
-} from "../src/storage.js";
+} from "../src/storage";
 
 // Mock nextId module variable
 beforeEach(() => {
