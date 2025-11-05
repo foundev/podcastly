@@ -1,12 +1,13 @@
 const CACHE_NAME = "podcastly-static-v1";
+const BASE_PATH = "/podcastly";
 const STATIC_ASSETS = [
-  "/",
-  "/index.html",
-  "/css/styles.css",
-  "/js/app.js",
-  "/manifest.webmanifest",
-  "/icons/icon-192.svg",
-  "/icons/icon-512.svg"
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/index.html`,
+  `${BASE_PATH}/css/styles.css`,
+  `${BASE_PATH}/js/app.js`,
+  `${BASE_PATH}/manifest.webmanifest`,
+  `${BASE_PATH}/icons/icon-192.svg`,
+  `${BASE_PATH}/icons/icon-512.svg`
 ];
 
 self.addEventListener("install", (event) => {
@@ -42,13 +43,15 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (url.origin === self.location.origin) {
-    if (url.pathname.startsWith("/api/")) {
+    if (url.pathname.startsWith(`${BASE_PATH}/api/`)) {
       event.respondWith(networkFirst(request));
       return;
     }
 
-    event.respondWith(cacheFirst(request));
-    return;
+    if (url.pathname.startsWith(BASE_PATH)) {
+      event.respondWith(cacheFirst(request));
+      return;
+    }
   }
 
   event.respondWith(networkFirst(request));
