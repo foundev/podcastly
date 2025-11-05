@@ -6,4 +6,3 @@ podcastly.db
 .brokk/
 node_modules/
 coverage/
-package-lock.json
