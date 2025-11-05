@@ -187,5 +187,67 @@ describe("RSS Parser Module", () => {
       expect(result.episodes[0].title).toBe("Valid Episode");
       expect(result.episodes[1].title).toBe("Untitled Episode");
     });
+
+    test("should sanitize malicious javascript: URLs", async () => {
+      const xmlResponse = `<?xml version="1.0" encoding="UTF-8"?>
+        <rss version="2.0">
+          <channel>
+            <title>Test Podcast</title>
+            <link>javascript:alert('XSS')</link>
+            <item>
+              <title>Malicious Episode</title>
+              <enclosure url="javascript:alert('XSS')" />
+              <link>javascript:void(0)</link>
+            </item>
+            <item>
+              <title>Safe Episode</title>
+              <enclosure url="https://example.com/audio.mp3" />
+              <link>https://example.com/episode</link>
+            </item>
+          </channel>
+        </rss>
+      `;
+
+      const mockResponse = {
+        ok: true,
+        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+      };
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
+
+      const result = await subscribeToFeed("http://example.com/feed");
+
+      // Malicious URLs should be sanitized to null
+      expect(result.link).toBeNull();
+      expect(result.episodes[0].audio_url).toBeNull();
+      expect(result.episodes[0].link).toBeNull();
+
+      // Safe URLs should pass through
+      expect(result.episodes[1].audio_url).toBe("https://example.com/audio.mp3");
+      expect(result.episodes[1].link).toBe("https://example.com/episode");
+    });
+
+    test("should sanitize data: URLs", async () => {
+      const xmlResponse = `<?xml version="1.0" encoding="UTF-8"?>
+        <rss version="2.0">
+          <channel>
+            <title>Test Podcast</title>
+            <item>
+              <title>Data URL Episode</title>
+              <enclosure url="data:text/html,alert('XSS')" />
+            </item>
+          </channel>
+        </rss>
+      `;
+
+      const mockResponse = {
+        ok: true,
+        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
+      };
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
+
+      const result = await subscribeToFeed("http://example.com/feed");
+
+      expect(result.episodes[0].audio_url).toBeNull();
+    });
   });
 });

@@ -27,6 +27,36 @@ function cleanText(value: string | null | undefined): string | null {
   return cleaned || null;
 }
 
+/**
+ * Sanitizes URLs to prevent XSS attacks via javascript: or data: URLs
+ * Only allows http:, https:, and relative URLs
+ */
+function sanitizeUrl(value: string | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const cleaned = value.trim();
+  if (!cleaned) {
+    return null;
+  }
+
+  // Check for dangerous protocols
+  const lowerUrl = cleaned.toLowerCase();
+  if (
+    lowerUrl.startsWith('javascript:') ||
+    lowerUrl.startsWith('data:') ||
+    lowerUrl.startsWith('vbscript:') ||
+    lowerUrl.startsWith('file:')
+  ) {
+    console.warn(`Blocked potentially malicious URL: ${cleaned.substring(0, 50)}`);
+    return null;
+  }
+
+  // Allow http:, https:, and relative URLs
+  return cleaned;
+}
+
 function parsePubDate(item: Element): string | null {
   const pubDate = item.querySelector("pubDate, published");
   if (!pubDate || !pubDate.textContent) {
@@ -49,7 +79,7 @@ function findImageUrl(channel: Element): string | null {
   if (image) {
     const url = image.querySelector("url");
     if (url && url.textContent) {
-      return cleanText(url.textContent);
+      return sanitizeUrl(url.textContent);
     }
   }
 
@@ -58,7 +88,7 @@ function findImageUrl(channel: Element): string | null {
   if (itunesImages.length > 0) {
     const href = itunesImages[0].getAttribute("href") || itunesImages[0].getAttribute("url");
     if (href) {
-      return cleanText(href);
+      return sanitizeUrl(href);
     }
   }
 
@@ -66,7 +96,7 @@ function findImageUrl(channel: Element): string | null {
   if (itunesImageLegacy) {
     const href = itunesImageLegacy.getAttribute("href") || itunesImageLegacy.getAttribute("url");
     if (href) {
-      return cleanText(href);
+      return sanitizeUrl(href);
     }
   }
 
@@ -75,7 +105,7 @@ function findImageUrl(channel: Element): string | null {
   if (mediaThumbnails.length > 0) {
     const href = mediaThumbnails[0].getAttribute("url") || mediaThumbnails[0].getAttribute("href");
     if (href) {
-      return cleanText(href);
+      return sanitizeUrl(href);
     }
   }
 
@@ -99,7 +129,7 @@ function parseEpisode(item: Element): Episode | null {
   const description = descEl ? cleanText(descEl.textContent) : null;
 
   const linkEl = item.querySelector("link");
-  const link = linkEl ? cleanText(linkEl.textContent) : null;
+  const link = linkEl ? sanitizeUrl(linkEl.textContent) : null;
 
   let duration: string | null = null;
   const itunesNS = "http://www.itunes.com/dtds/podcast-1.0.dtd";
@@ -115,19 +145,19 @@ function parseEpisode(item: Element): Episode | null {
   let audioUrl: string | null = null;
   const enclosure = item.querySelector("enclosure");
   if (enclosure) {
-    audioUrl = cleanText(enclosure.getAttribute("url"));
+    audioUrl = sanitizeUrl(enclosure.getAttribute("url"));
   }
   if (!audioUrl) {
     const mediaNS = "http://search.yahoo.com/mrss/";
     const mediaContent = item.getElementsByTagNameNS(mediaNS, "content");
     if (mediaContent.length > 0) {
-      audioUrl = cleanText(mediaContent[0].getAttribute("url") || mediaContent[0].textContent);
+      audioUrl = sanitizeUrl(mediaContent[0].getAttribute("url") || mediaContent[0].textContent);
     }
   }
   if (!audioUrl) {
     const mediaContent = item.querySelector("media\\:content");
     if (mediaContent) {
-      audioUrl = cleanText(mediaContent.textContent || mediaContent.getAttribute("url"));
+      audioUrl = sanitizeUrl(mediaContent.textContent || mediaContent.getAttribute("url"));
     }
   }
 
@@ -200,7 +230,7 @@ function parseFeed(xmlText: string): Omit<FeedData, "feed_url" | "updated_at"> {
   const description = descEl ? cleanText(descEl.textContent) : null;
 
   const linkEl = channel.querySelector("link");
-  const link = linkEl ? cleanText(linkEl.textContent) : null;
+  const link = linkEl ? sanitizeUrl(linkEl.textContent) : null;
 
   const imageUrl = findImageUrl(channel);
 
