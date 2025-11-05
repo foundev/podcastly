@@ -1,6 +1,6 @@
 /** Parser RSS pour Podcastly. */
 
-import type { Episode } from "./storage.js";
+import type { Episode } from "./storage";
 
 export class FeedError extends Error {
   constructor(message: string) {
