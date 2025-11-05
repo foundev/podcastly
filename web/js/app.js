@@ -175,7 +175,7 @@ function registerServiceWorker() {
     return;
   }
   navigator.serviceWorker
-    .register("/service-worker.js")
+    .register("service-worker.js")
     .then(() => {
       // no-op; registration succeeded
     })

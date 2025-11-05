@@ -2,6 +2,18 @@
 
 Application de podcast open source écrite en JavaScript vanilla. Abonnez-vous à vos émissions préférées via RSS. Toutes les données sont stockées localement dans le navigateur (localStorage).
 
+## Déploiement GitHub Pages
+
+Ce projet est configuré pour se déployer automatiquement sur GitHub Pages via GitHub Actions. Lors d'un push sur la branche `main`, le workflow déploie automatiquement le contenu du répertoire `web/` sur GitHub Pages.
+
+### Configuration requise
+
+1. Activez GitHub Pages dans les paramètres du dépôt :
+   - Allez dans **Settings** > **Pages**
+   - Sous **Source**, sélectionnez **GitHub Actions**
+
+2. Le workflow se déclenchera automatiquement lors des pushs sur `main`
+
 ## Démarrage rapide
 
 ### Option 1 : Serveur HTTP Python (si Python est installé)
