@@ -4,3 +4,6 @@ __pycache__/
 podcastly.db
 .venv/
 .brokk/
+node_modules/
+coverage/
+package-lock.json
