@@ -30,7 +30,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        text: jest.fn().mockResolvedValue(xmlResponse),
+        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -53,7 +53,7 @@ describe("RSS Parser Module", () => {
     test("should propagate parse errors", async () => {
       const mockResponse = {
         ok: true,
-        text: jest.fn().mockResolvedValue("invalid xml"),
+        json: jest.fn().mockResolvedValue({ contents: "invalid xml" }),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -89,7 +89,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        text: jest.fn().mockResolvedValue(xmlResponse),
+        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -117,7 +117,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        text: jest.fn().mockResolvedValue(xmlResponse),
+        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -136,7 +136,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        text: jest.fn().mockResolvedValue(xmlResponse),
+        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -151,7 +151,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        text: jest.fn().mockResolvedValue(xmlResponse),
+        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -177,7 +177,7 @@ describe("RSS Parser Module", () => {
 
       const mockResponse = {
         ok: true,
-        text: jest.fn().mockResolvedValue(xmlResponse),
+        json: jest.fn().mockResolvedValue({ contents: xmlResponse }),
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 

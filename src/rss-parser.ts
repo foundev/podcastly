@@ -146,9 +146,13 @@ function parseEpisode(item: Element): Episode | null {
 
 async function fetchFeed(feedUrl: string): Promise<string> {
   try {
-    const response = await fetch(feedUrl, {
+    // Use AllOrigins CORS proxy to bypass CORS restrictions
+    // This allows fetching RSS feeds from external domains that don't allow cross-origin requests
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
+
+    const response = await fetch(proxyUrl, {
       headers: {
-        "User-Agent": "Podcastly/0.1 (+https://github.com/your-org/podcastly)",
+        "Content-Type": "application/json",
       },
     });
 
@@ -156,8 +160,14 @@ async function fetchFeed(feedUrl: string): Promise<string> {
       throw new FeedError(`Échec de la récupération du flux (${response.status})`);
     }
 
-    const text = await response.text();
-    return text;
+    const data = await response.json();
+
+    // AllOrigins returns the content in a 'contents' property
+    if (!data.contents) {
+      throw new FeedError("Le proxy n'a pas pu récupérer le contenu du flux");
+    }
+
+    return data.contents;
   } catch (error) {
     if (error instanceof FeedError) {
       throw error;
