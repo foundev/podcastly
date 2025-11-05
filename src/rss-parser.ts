@@ -176,28 +176,14 @@ function parseEpisode(item: Element): Episode | null {
 
 async function fetchFeed(feedUrl: string): Promise<string> {
   try {
-    // Use AllOrigins CORS proxy to bypass CORS restrictions
-    // This allows fetching RSS feeds from external domains that don't allow cross-origin requests
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
-
-    const response = await fetch(proxyUrl, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    // Direct fetch - requires RSS feed servers to have CORS headers enabled
+    const response = await fetch(feedUrl);
 
     if (!response.ok) {
       throw new FeedError(`Échec de la récupération du flux (${response.status})`);
     }
 
-    const data = await response.json();
-
-    // AllOrigins returns the content in a 'contents' property
-    if (!data.contents) {
-      throw new FeedError("Le proxy n'a pas pu récupérer le contenu du flux");
-    }
-
-    return data.contents;
+    return await response.text();
   } catch (error) {
     if (error instanceof FeedError) {
       throw error;
