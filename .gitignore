@@ -6,3 +6,8 @@ podcastly.db
 .brokk/
 node_modules/
 coverage/
+
+# TypeScript build artifacts
+*.d.ts
+*.d.ts.map
+*.js.map
