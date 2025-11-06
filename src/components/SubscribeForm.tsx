@@ -6,6 +6,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import InputAdornment from '@mui/material/InputAdornment';
+import Fade from '@mui/material/Fade';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
 
 interface SubscribeFormProps {
@@ -28,41 +31,86 @@ function SubscribeForm({ onSubscribe, statusMessage, isError }: SubscribeFormPro
   };
 
   return (
-    <Card elevation={2}>
-      <CardContent>
-        <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
-          Subscribe to a podcast
+    <Card
+      id="subscribe"
+      elevation={0}
+      sx={{
+        overflow: 'hidden',
+        border: '1px solid rgba(148, 163, 184, 0.18)',
+        background: 'linear-gradient(140deg, rgba(24, 35, 61, 0.9), rgba(33, 25, 81, 0.72))',
+      }}
+    >
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 'auto -30% -60% auto',
+          width: 420,
+          height: 420,
+          background: 'radial-gradient(circle at center, rgba(127, 90, 240, 0.35) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }}
+      />
+      <CardContent sx={{ position: 'relative', zIndex: 1 }}>
+        <Typography variant="overline" sx={{ color: 'secondary.light', letterSpacing: 4 }}>
+          Abonnements
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
-            <TextField
-              fullWidth
-              id="feed-url"
-              name="feed-url"
-              type="url"
-              label="RSS Feed URL"
-              placeholder="https://example.com/feed.xml"
-              required
-              value={feedUrl}
-              onChange={(e) => setFeedUrl(e.target.value)}
-              variant="outlined"
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              startIcon={<RssFeedIcon />}
-              sx={{ minWidth: 130, height: 56 }}
-            >
-              Subscribe
-            </Button>
+        <Typography variant="h6" component="h2" sx={{ fontWeight: 600, mt: 1 }}>
+          Ajoutez un flux RSS en quelques secondes
+        </Typography>
+        <Typography variant="body2" sx={{ mt: 1.5, color: 'text.secondary', maxWidth: 520 }}>
+          Collez l'URL du flux RSS pour synchroniser automatiquement les nouveaux épisodes et les retrouver dans votre bibliothèque.
+        </Typography>
+        <Stack
+          component="form"
+          onSubmit={handleSubmit}
+          spacing={2}
+          sx={{ mt: 3, flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'center' } }}
+        >
+          <TextField
+            fullWidth
+            id="feed-url"
+            name="feed-url"
+            type="url"
+            label="URL du flux RSS"
+            placeholder="https://example.com/feed.xml"
+            required
+            value={feedUrl}
+            onChange={(e) => setFeedUrl(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <RssFeedIcon color="secondary" />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+            startIcon={<RssFeedIcon />}
+            sx={{
+              whiteSpace: 'nowrap',
+              height: 56,
+            }}
+          >
+            S'abonner
+          </Button>
+        </Stack>
+        <Fade in={Boolean(statusMessage)}>
+          <Box>
+            {statusMessage && (
+              <Alert
+                severity={isError ? 'error' : 'success'}
+                variant="outlined"
+                sx={{ mt: 3 }}
+              >
+                {statusMessage}
+              </Alert>
+            )}
           </Box>
-          {statusMessage && (
-            <Alert severity={isError ? 'error' : 'success'} sx={{ mt: 2 }}>
-              {statusMessage}
-            </Alert>
-          )}
-        </Box>
+        </Fade>
       </CardContent>
     </Card>
   );

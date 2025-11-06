@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import {
   loadPodcasts,
   getPodcast,
@@ -18,21 +19,135 @@ import SubscribeForm from './components/SubscribeForm';
 import PodcastList from './components/PodcastList';
 import EpisodeList from './components/EpisodeList';
 
-// Create Material Design theme with custom colors
+// Thème modernisé avec ambiance néon sombre
 const theme = createTheme({
   palette: {
+    mode: 'dark',
     primary: {
-      main: '#3f51b5', // Indigo
+      main: '#7f5af0',
+      contrastText: '#f8fafc',
     },
     secondary: {
-      main: '#2196f3', // Blue
+      main: '#22d3ee',
     },
     background: {
-      default: '#f4f6fb',
+      default: '#050816',
+      paper: 'rgba(15, 23, 42, 0.82)',
+    },
+    text: {
+      primary: '#e2e8f0',
+      secondary: 'rgba(226, 232, 240, 0.72)',
     },
   },
   typography: {
-    fontFamily: '"Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Inter", "Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif',
+    h2: {
+      fontWeight: 700,
+      letterSpacing: '-0.02em',
+    },
+    h6: {
+      fontWeight: 600,
+    },
+    button: {
+      fontWeight: 600,
+      letterSpacing: '0.02em',
+    },
+  },
+  shape: {
+    borderRadius: 18,
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          margin: 0,
+          backgroundColor: '#050816',
+          color: '#e2e8f0',
+          minHeight: '100vh',
+        },
+        '*::-webkit-scrollbar': {
+          width: 8,
+          height: 8,
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(148, 163, 184, 0.45)',
+          borderRadius: 999,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          position: 'relative',
+          background: 'linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,41,59,0.72))',
+          border: '1px solid rgba(148, 163, 184, 0.18)',
+          boxShadow: '0 25px 45px -20px rgba(15, 118, 255, 0.35)',
+          backdropFilter: 'blur(22px)',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 999,
+          paddingLeft: '1.5rem',
+          paddingRight: '1.5rem',
+          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          '&:hover': {
+            transform: 'translateY(-1px)',
+            boxShadow: '0 18px 35px -18px rgba(127, 90, 240, 0.7)',
+          },
+          '&.MuiButton-containedPrimary': {
+            backgroundImage: 'linear-gradient(135deg, #7f5af0 0%, #22d3ee 100%)',
+            boxShadow: '0 20px 40px -22px rgba(34, 211, 238, 0.55)',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: 'filled',
+      },
+      styleOverrides: {
+        root: {
+          '& .MuiFilledInput-root': {
+            borderRadius: 14,
+            backgroundColor: 'rgba(15, 23, 42, 0.65)',
+            transition: 'background-color 0.2s ease',
+            '&:hover': {
+              backgroundColor: 'rgba(30, 41, 59, 0.7)',
+            },
+            '&.Mui-focused': {
+              backgroundColor: 'rgba(30, 41, 59, 0.85)',
+            },
+          },
+          '& .MuiInputBase-input': {
+            paddingTop: '18px',
+          },
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 14,
+          padding: '0.75rem 1rem',
+          transition: 'transform 0.2s ease, background 0.2s ease',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            backgroundColor: 'rgba(124, 58, 237, 0.16)',
+          },
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          borderRadius: 14,
+          backdropFilter: 'blur(18px)',
+        },
+      },
+    },
   },
 });
 
@@ -110,18 +225,76 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-        <Header />
-        <Container maxWidth="lg">
-          <Box sx={{ py: 4 }}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box
+          sx={{
+            position: 'relative',
+            minHeight: '100vh',
+            bgcolor: 'background.default',
+            backgroundImage: `radial-gradient(circle at 20% 20%, rgba(127, 90, 240, 0.28), transparent 55%),
+              radial-gradient(circle at 85% 0%, rgba(34, 211, 238, 0.25), transparent 45%),
+              linear-gradient(160deg, rgba(4, 7, 18, 0.6), rgba(8, 11, 26, 0.95))`,
+            overflow: 'hidden',
+          }}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              pointerEvents: 'none',
+              mixBlendMode: 'screen',
+              background: 'radial-gradient(120% 120% at 110% 10%, rgba(56, 189, 248, 0.14), transparent 50%)',
+            }}
+          />
+          <Header />
+          <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, pb: { xs: 10, md: 14 } }}>
+            <Box
+              sx={{
+                pt: { xs: 8, md: 10 },
+                pb: { xs: 6, md: 8 },
+                textAlign: { xs: 'center', md: 'left' },
+              }}
+            >
+              <Typography
+                variant="overline"
+                color="secondary"
+                sx={{ letterSpacing: 6, textTransform: 'uppercase' }}
+              >
+                Une nouvelle manière d'écouter
+              </Typography>
+              <Typography
+                variant="h2"
+                component="h1"
+                sx={{ mt: 2, fontWeight: 700, lineHeight: 1.05 }}
+              >
+                Redécouvrez vos podcasts favoris
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  mt: 2,
+                  maxWidth: 640,
+                  mx: { xs: 'auto', md: 0 },
+                  color: 'text.secondary',
+                }}
+              >
+                Suivez vos émissions, explorez les derniers épisodes et gérez votre file d'écoute dans une interface repensée, dynamique et immersive.
+              </Typography>
+            </Box>
             <SubscribeForm
               onSubscribe={handleSubscribe}
               statusMessage={statusMessage}
               isError={isError}
             />
-            <Box sx={{ mt: 3, display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+            <Box
+              sx={{
+                mt: 4,
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', lg: '420px 1fr' },
+                gap: { xs: 3, md: 4 },
+              }}
+            >
               <PodcastList
                 podcasts={podcasts}
                 selectedPodcastId={selectedPodcastId}
@@ -132,10 +305,9 @@ function App() {
                 episodes={episodes}
               />
             </Box>
-          </Box>
-        </Container>
-      </Box>
-    </ThemeProvider>
+          </Container>
+        </Box>
+      </ThemeProvider>
   );
 }
 

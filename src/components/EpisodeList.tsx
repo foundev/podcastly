@@ -5,12 +5,12 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import DescriptionIcon from '@mui/icons-material/Description';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
-import Divider from '@mui/material/Divider';
 
 interface EpisodeListProps {
   podcast: Podcast | null;
@@ -26,89 +26,130 @@ function truncate(text: string, maxLength: number = 280): string {
 
 function EpisodeList({ podcast, episodes }: EpisodeListProps) {
   const heading = podcast?.title
-    ? `${podcast.title} — Episodes`
-    : 'Episodes';
+    ? `${podcast.title} — Épisodes`
+    : 'Épisodes';
+
+  const formatPublishedAt = (input?: string | null) => {
+    if (!input) {
+      return null;
+    }
+    const parsed = new Date(input);
+    if (Number.isNaN(parsed.getTime())) {
+      return null;
+    }
+    return parsed.toLocaleDateString(undefined, {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
 
   return (
-    <Card elevation={2} sx={{ height: 'fit-content' }}>
-      <CardContent>
-        <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
+    <Card elevation={0} sx={{ height: 'fit-content', overflow: 'hidden' }}>
+      <CardContent sx={{ position: 'relative', zIndex: 1 }}>
+        <Typography variant="overline" sx={{ color: 'secondary.light', letterSpacing: 4 }}>
+          Détails
+        </Typography>
+        <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 600, mt: 1 }}>
           {heading}
         </Typography>
         {episodes.length === 0 ? (
           <Box sx={{
-            py: 4,
+            py: 5,
             textAlign: 'center',
             color: 'text.secondary',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 1
+            gap: 1.5,
           }}>
             <QueueMusicIcon sx={{ fontSize: 48, opacity: 0.3 }} />
             <Typography variant="body2">
-              No episodes found.
+              Aucun épisode disponible pour le moment.
             </Typography>
           </Box>
         ) : (
-          <List sx={{ pt: 1 }}>
-            {episodes.map((episode, index) => {
+          <List sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+            {episodes.map((episode) => {
               const meta: string[] = [];
               if (episode.published_at) {
-                meta.push(new Date(episode.published_at).toLocaleString());
+                const formatted = formatPublishedAt(episode.published_at);
+                if (formatted) {
+                  meta.push(formatted);
+                }
               }
               if (episode.duration) {
-                meta.push(`Duration: ${episode.duration}`);
+                meta.push(`Durée : ${episode.duration}`);
               }
 
               return (
-                <Box key={episode.guid || index}>
-                  <ListItem
-                    alignItems="flex-start"
-                    sx={{ flexDirection: 'column', gap: 1, py: 2 }}
-                  >
-                    <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.3 }}>
-                      {episode.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5 }}>
-                      {truncate(episode.description || '')}
-                    </Typography>
-                    {meta.length > 0 && (
-                      <Typography variant="caption" color="text.secondary" sx={{ fontStyle: 'italic' }}>
-                        {meta.join(' • ')}
-                      </Typography>
+                <ListItem
+                  key={episode.guid || episode.audio_url || episode.link || episode.title}
+                  alignItems="flex-start"
+                  sx={{
+                    flexDirection: 'column',
+                    gap: 1.25,
+                    p: { xs: 2.25, md: 2.75 },
+                    borderRadius: 3,
+                    bgcolor: 'rgba(15, 23, 42, 0.58)',
+                    border: '1px solid rgba(148, 163, 184, 0.16)',
+                    boxShadow: '0 22px 35px -28px rgba(14, 165, 233, 0.55)',
+                  }}
+                >
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.25 }}>
+                    {episode.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                    {truncate(episode.description || '')}
+                  </Typography>
+                  {meta.length > 0 && (
+                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                      {meta.map((item) => (
+                        <Chip
+                          key={item}
+                          label={item}
+                          size="small"
+                          variant="outlined"
+                          sx={{
+                            borderColor: 'rgba(148, 163, 184, 0.35)',
+                            color: 'text.secondary',
+                            bgcolor: 'rgba(148, 163, 184, 0.08)',
+                          }}
+                        />
+                      ))}
+                    </Stack>
+                  )}
+                  <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
+                    {episode.audio_url && (
+                      <Button
+                        component="a"
+                        href={episode.audio_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        variant="contained"
+                        color="primary"
+                        startIcon={<PlayArrowIcon />}
+                        sx={{ borderRadius: 999 }}
+                      >
+                        Écouter
+                      </Button>
                     )}
-                    <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>
-                      {episode.audio_url && (
-                        <Link
-                          href={episode.audio_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
-                        >
-                          <IconButton size="small" color="primary">
-                            <PlayArrowIcon />
-                          </IconButton>
-                          <Typography variant="body2">Play</Typography>
-                        </Link>
-                      )}
-                      {episode.link && (
-                        <Link
-                          href={episode.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
-                        >
-                          <IconButton size="small" color="primary">
-                            <DescriptionIcon />
-                          </IconButton>
-                          <Typography variant="body2">Show Notes</Typography>
-                        </Link>
-                      )}
-                    </Box>
-                  </ListItem>
-                  {index < episodes.length - 1 && <Divider />}
-                </Box>
+                    {episode.link && (
+                      <Button
+                        component="a"
+                        href={episode.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        variant="outlined"
+                        color="secondary"
+                        startIcon={<DescriptionIcon />}
+                        sx={{ borderRadius: 999 }}
+                      >
+                        Notes de l'épisode
+                      </Button>
+                    )}
+                  </Stack>
+                </ListItem>
               );
             })}
           </List>
