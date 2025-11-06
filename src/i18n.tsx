@@ -49,6 +49,17 @@ interface Translation {
     podcastNotFound: string;
     genericError: string;
   };
+  player: {
+    nowPlaying: string;
+    previous: string;
+    next: string;
+    play: string;
+    pause: string;
+    close: string;
+    openExternal: string;
+    showNotes: string;
+    progressLabel: string;
+  };
 }
 
 const translations: Record<Language, Translation> = {
@@ -95,6 +106,17 @@ const translations: Record<Language, Translation> = {
       podcastNotFound: "Podcast not found",
       genericError: "Something went wrong",
     },
+    player: {
+      nowPlaying: "Now playing",
+      previous: "Previous episode",
+      next: "Next episode",
+      play: "Play",
+      pause: "Pause",
+      close: "Close player",
+      openExternal: "Open audio in new tab",
+      showNotes: "Episode notes",
+      progressLabel: "Playback position",
+    },
   },
   fr: {
     header: {
@@ -138,6 +160,17 @@ const translations: Record<Language, Translation> = {
       subscriptionError: "Échec de l'abonnement",
       podcastNotFound: "Podcast non trouvé",
       genericError: "Un problème est survenu",
+    },
+    player: {
+      nowPlaying: "Lecture en cours",
+      previous: "Épisode précédent",
+      next: "Épisode suivant",
+      play: "Lecture",
+      pause: "Pause",
+      close: "Fermer le lecteur",
+      openExternal: "Ouvrir l'audio dans un nouvel onglet",
+      showNotes: "Notes de l'épisode",
+      progressLabel: "Position de lecture",
     },
   },
 };

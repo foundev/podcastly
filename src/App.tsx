@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
@@ -18,6 +18,7 @@ import Header from "./components/Header";
 import SubscribeForm from "./components/SubscribeForm";
 import PodcastList from "./components/PodcastList";
 import EpisodeList from "./components/EpisodeList";
+import PodcastPlayer from "./components/PodcastPlayer";
 import { useI18n } from "./i18n";
 
 type StatusKey =
@@ -31,6 +32,12 @@ type StatusState =
   | { type: "none" }
   | { type: "translated"; key: StatusKey; title?: string; isError: boolean }
   | { type: "custom"; message: string; isError: boolean };
+
+type PlayerState = {
+  podcast: Podcast;
+  queue: Episode[];
+  currentIndex: number;
+};
 
 // Thème modernisé avec ambiance néon sombre
 const theme = createTheme({
@@ -175,7 +182,14 @@ function App() {
   const [selectedPodcast, setSelectedPodcast] = useState<Podcast | null>(null);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [status, setStatus] = useState<StatusState>({ type: "none" });
+  const [playerState, setPlayerState] = useState<PlayerState | null>(null);
   const { t } = useI18n();
+
+  const getEpisodeIdentity = useCallback((episode: Episode) => {
+    return (
+      episode.guid || episode.audio_url || episode.link || episode.title || null
+    );
+  }, []);
 
   // Load podcasts on mount
   useEffect(() => {
@@ -297,6 +311,106 @@ function App() {
     return { message: "", isError: false };
   }, [status, t]);
 
+  const handlePlayEpisode = useCallback(
+    (episode: Episode, index: number) => {
+      if (!selectedPodcast || !episode.audio_url) {
+        return;
+      }
+
+      setPlayerState({
+        podcast: selectedPodcast,
+        queue: episodes,
+        currentIndex: index,
+      });
+    },
+    [episodes, selectedPodcast],
+  );
+
+  const handleNextEpisode = useCallback(() => {
+    setPlayerState((prev) => {
+      if (!prev) {
+        return prev;
+      }
+      const nextIndex = prev.currentIndex + 1;
+      if (nextIndex >= prev.queue.length) {
+        return prev;
+      }
+      return {
+        ...prev,
+        currentIndex: nextIndex,
+      };
+    });
+  }, []);
+
+  const handlePreviousEpisode = useCallback(() => {
+    setPlayerState((prev) => {
+      if (!prev) {
+        return prev;
+      }
+      const previousIndex = prev.currentIndex - 1;
+      if (previousIndex < 0) {
+        return prev;
+      }
+      return {
+        ...prev,
+        currentIndex: previousIndex,
+      };
+    });
+  }, []);
+
+  const handleClosePlayer = useCallback(() => {
+    setPlayerState(null);
+  }, []);
+
+  useEffect(() => {
+    if (!selectedPodcast) {
+      return;
+    }
+    setPlayerState((prev) => {
+      if (!prev) {
+        return prev;
+      }
+      if (prev.podcast.id !== selectedPodcast.id) {
+        return prev;
+      }
+      if (episodes.length === 0) {
+        return null;
+      }
+      const currentEpisode = prev.queue[prev.currentIndex];
+      const currentKey = currentEpisode
+        ? getEpisodeIdentity(currentEpisode)
+        : null;
+      const updatedIndex =
+        currentKey !== null
+          ? episodes.findIndex(
+              (candidate) => getEpisodeIdentity(candidate) === currentKey,
+            )
+          : prev.currentIndex;
+
+      return {
+        podcast: prev.podcast,
+        queue: episodes,
+        currentIndex:
+          updatedIndex >= 0
+            ? updatedIndex
+            : Math.min(prev.currentIndex, Math.max(episodes.length - 1, 0)),
+      };
+    });
+  }, [episodes, selectedPodcast, getEpisodeIdentity]);
+
+  const activeEpisode =
+    playerState && playerState.queue[playerState.currentIndex]
+      ? playerState.queue[playerState.currentIndex]
+      : null;
+
+  const activeEpisodeKey = activeEpisode
+    ? getEpisodeIdentity(activeEpisode)
+    : null;
+
+  const hasPrevious = !!playerState && playerState.currentIndex > 0;
+  const hasNext =
+    !!playerState && playerState.currentIndex < playerState.queue.length - 1;
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -377,9 +491,25 @@ function App() {
               selectedPodcastId={selectedPodcastId}
               onSelectPodcast={handleSelectPodcast}
             />
-            <EpisodeList podcast={selectedPodcast} episodes={episodes} />
+            <EpisodeList
+              podcast={selectedPodcast}
+              episodes={episodes}
+              onPlayEpisode={handlePlayEpisode}
+              activeEpisodeKey={activeEpisodeKey}
+            />
           </Box>
         </Container>
+        {playerState && activeEpisode && activeEpisode.audio_url && (
+          <PodcastPlayer
+            podcast={playerState.podcast}
+            episode={activeEpisode}
+            hasPrevious={hasPrevious}
+            hasNext={hasNext}
+            onPrevious={handlePreviousEpisode}
+            onNext={handleNextEpisode}
+            onClose={handleClosePlayer}
+          />
+        )}
       </Box>
     </ThemeProvider>
   );

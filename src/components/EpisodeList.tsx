@@ -9,6 +9,7 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import DescriptionIcon from "@mui/icons-material/Description";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 import { useI18n } from "../i18n";
@@ -16,6 +17,8 @@ import { useI18n } from "../i18n";
 interface EpisodeListProps {
   podcast: Podcast | null;
   episodes: Episode[];
+  onPlayEpisode: (episode: Episode, index: number) => void;
+  activeEpisodeKey?: string | null;
 }
 
 function truncate(text: string, maxLength: number = 280): string {
@@ -25,7 +28,18 @@ function truncate(text: string, maxLength: number = 280): string {
   return `${text.slice(0, maxLength - 1)}…`;
 }
 
-function EpisodeList({ podcast, episodes }: EpisodeListProps) {
+function getEpisodeKey(episode: Episode): string | null {
+  return (
+    episode.guid || episode.audio_url || episode.link || episode.title || null
+  );
+}
+
+function EpisodeList({
+  podcast,
+  episodes,
+  onPlayEpisode,
+  activeEpisodeKey,
+}: EpisodeListProps) {
   const { t } = useI18n();
 
   const heading = t.episodes.heading(podcast?.title);
@@ -81,7 +95,15 @@ function EpisodeList({ podcast, episodes }: EpisodeListProps) {
           <List
             sx={{ pt: 2, display: "flex", flexDirection: "column", gap: 2.5 }}
           >
-            {episodes.map((episode) => {
+            {episodes.map((episode, index) => {
+              const episodeKey =
+                getEpisodeKey(episode) ??
+                `${episode.title ?? "episode"}-${index}`;
+              const isActive =
+                activeEpisodeKey !== undefined && activeEpisodeKey !== null
+                  ? getEpisodeKey(episode) === activeEpisodeKey
+                  : false;
+
               const meta: string[] = [];
               if (episode.published_at) {
                 const formatted = formatPublishedAt(episode.published_at);
@@ -95,21 +117,24 @@ function EpisodeList({ podcast, episodes }: EpisodeListProps) {
 
               return (
                 <ListItem
-                  key={
-                    episode.guid ||
-                    episode.audio_url ||
-                    episode.link ||
-                    episode.title
-                  }
+                  key={episodeKey}
                   alignItems="flex-start"
                   sx={{
                     flexDirection: "column",
                     gap: 1.25,
                     p: { xs: 2.25, md: 2.75 },
                     borderRadius: 3,
-                    bgcolor: "rgba(15, 23, 42, 0.58)",
-                    border: "1px solid rgba(148, 163, 184, 0.16)",
-                    boxShadow: "0 22px 35px -28px rgba(14, 165, 233, 0.55)",
+                    bgcolor: isActive
+                      ? "rgba(124, 58, 237, 0.24)"
+                      : "rgba(15, 23, 42, 0.58)",
+                    border: isActive
+                      ? "1px solid rgba(127, 90, 240, 0.65)"
+                      : "1px solid rgba(148, 163, 184, 0.16)",
+                    boxShadow: isActive
+                      ? "0 30px 45px -32px rgba(124, 58, 237, 0.65)"
+                      : "0 22px 35px -28px rgba(14, 165, 233, 0.55)",
+                    transition:
+                      "background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
                   }}
                 >
                   <Typography
@@ -155,16 +180,16 @@ function EpisodeList({ podcast, episodes }: EpisodeListProps) {
                   >
                     {episode.audio_url && (
                       <Button
-                        component="a"
-                        href={episode.audio_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        onClick={() => onPlayEpisode(episode, index)}
                         variant="contained"
                         color="primary"
-                        startIcon={<PlayArrowIcon />}
+                        startIcon={
+                          isActive ? <GraphicEqIcon /> : <PlayArrowIcon />
+                        }
                         sx={{ borderRadius: 999 }}
+                        aria-pressed={isActive}
                       >
-                        {t.episodes.play}
+                        {isActive ? t.player.nowPlaying : t.episodes.play}
                       </Button>
                     )}
                     {episode.link && (
